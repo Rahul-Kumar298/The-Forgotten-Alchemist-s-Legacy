@@ -1,0 +1,37 @@
+Start
+  |
+  v
+Enter the Wind Direction Room
+  |
+  v
+Look for Clues in the Room
+  |
+  v
+Find Compass or Directional Hints?
+  / \
+Yes  No
+ |    |
+ v    v
+Examine Use Environmental
+Compass  Clues (Sun, Shadows, etc.)
+  |    |
+  v    v
+Determine Correct Direction (N/S/E/W)
+  |
+  v
+Input Direction (Lever/Button/Voice)
+  |
+  v
+Correct Direction?
+  / \
+Yes  No
+ |    |
+ v    v
+Unlock   Remain Locked
+Door/Passage or Trigger Deterrent
+  |
+  v
+Proceed to Next Area
+  |
+  v
+End
