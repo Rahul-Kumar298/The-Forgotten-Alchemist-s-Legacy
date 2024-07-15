@@ -1,0 +1,44 @@
+Start
+ |
+Display Guardian Introduction
+ |
+Player Decision: Fight or Solve Puzzle?
+ |-----------------------|
+ |                       |
+Fight                   Solve Puzzle
+ |                       |
+Check Player's Equipment Display Puzzle Instructions
+ |                       |
+Fire-resistant Shield?   Present Puzzle
+ |      |                |
+Yes     No               Player Solves Puzzle
+ |      |                |
+Proceed Player Takes     Correct Solution?
+with Fight  Damage       |                 |
+ |                       Yes               No
+Combat Sequence          |                 |
+ |         |             Guardian Pacified Player Takes Damage
+Guardian's Health        |
+ |         |
+Health > 0 Health <= 0
+ |         |
+Continue   Guardian
+Combat     Defeated
+ |
+Post Encounter
+ |
+Check Player's Health
+ |             |
+Health > 0   Health <= 0
+ |             |
+Continue      Game Over
+Adventure
+ |
+Print Outcome Message
+ |      |
+Guardian  Player
+Defeated  Defeated
+ |
+Proceed to Next Chamber / End Game
+ |
+End

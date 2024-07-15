@@ -11,13 +11,13 @@ symbols = {
 
 # Hints for each symbol in corresponding order
 hints = [
-    "The beginning of all combustion processes.",
+    "I'm the spark that sets things ablaze, In engines, rockets, and stoves I play. Turn the key or strike a match, I'm the force that lights the hatch. What am I?",
     "Measure of thermal energy intensity.",
     "Process of changing one form into another.",
-    "Maintaining harmony or equilibrium.",
-    "It affects all processes, including the transformation of elements."
+    "What hangs in the middle, teetering on a beam? Equilibrium’s secret, a delicate dream.",
+    "I can crawl, I can fly, I have hands but no legs or wings either. What am I?"
 ]
-task_completed = 0
+
 # Shuffle symbols and hints together in the same order
 def shuffle_symbols_and_hints():
     symbol_list = list(symbols.keys())
@@ -67,22 +67,135 @@ def play_flame_symbol_puzzle():
         
         try:
             player_sequence = [correct_sequence[int(idx) - 1] for idx in player_input.split()]
-        except (ValueError, IndexError) as e:
-            print(e)
-            break
+        except (ValueError, IndexError):
+            print("Invalid input. Please enter the sequence numbers correctly.")
+            continue
         
         if check_solution(player_sequence, correct_sequence):
             print("\nCongratulations! The symbols align perfectly, unlocking the chamber.")
             return True
-            break
         else:
             print("\nThe symbols do not align correctly. You Lose!.")
             print("Game Over")
-            break
+            return False
 
-a=play_flame_symbol_puzzle()
-if a == 'True':
-    task_completed = 1
-    b = play_temperature_control_test()
-    if b == 'True': 
-        task_completed += 1
+# Define initial temperature readings for various devices
+temperature_readings = {
+    "Central Thermometer": 25,  # in Celsius
+    "Wall Gauge": 30,
+    "Ceiling Sensor": 28,
+    "Floor Plate": 22
+}
+
+def display_chamber():
+    print("You are now inside the Wings Of Fire.")
+    print("Now you are in chamber which contains several temperature measuring devices. ")
+    print()
+    print("The chamber contains several devices showing temperature readings:")
+    for device, temperature in temperature_readings.items():
+        print(f"{device}: {temperature}°C")
+    print()
+    print("In this chamber there is a river. On the side where you are there is a puzzle, but due to darkness, the puzzle is not visible. On the other side of the river, there is a lantern. ")
+    print("You can decrease or increase the temperature to cross the river.")
+    c3 = input("What can you do to go the other side of the river?(enter 1 to decrease or 2 to increase)\n")
+    if c3 == "1":
+        temp = int(input("Enter the temperature(to freeze or unfreeze the river): "))
+        print()
+        print(f"The temperature is set to {temp}°C.")
+
+        if temp == 0:
+            print("River is freezing...")
+            print("Now you can cross the river.")
+            print()
+        else:
+            print("You can't cross the river.")
+    else:
+        print("Incorrect.")
+        print("You can't continue further.")
+
+# Define initial temperature readings for the containers
+container_temperatures = {
+    "Fire Container": 80,
+    "Water Container": 20,
+    "Earth Container": 25,
+    "Air Container": 15
+}
+
+def display_puzzle_instructions():
+    print("Puzzle: Balancing the Elements")
+    print("Adjust the temperatures of the four elemental containers according to the following rules:")
+    print("1. The Fire Container must be at least twice as hot as the Earth Container.")
+    print("2. The Water Container must be exactly 10°C cooler than the Earth Container.")
+    print("3. The Air Container must be 5°C warmer than the Water Container.")
+    print("4. The sum of all container temperatures must equal 180°C.")
+    print()
+    print("Current temperatures:")
+    for container, temp in container_temperatures.items():
+        print(f"{container}: {temp}°C")
+
+def check_puzzle_solution():
+    fire = container_temperatures["Fire Container"]
+    water = container_temperatures["Water Container"]
+    earth = container_temperatures["Earth Container"]
+    air = container_temperatures["Air Container"]
+
+    if (fire >= 2 * earth and
+        water == earth - 10 and
+        air == water + 5 and
+        (fire + water + earth + air) == 180):
+        return True
+    else:
+        return False
+
+def play_temperature_control_puzzle():
+    display_puzzle_instructions()
+    hi = input("Do you want a hint? (y/n) ")
+    if hi == "y":
+        print("Inside the frozen river there is a glass bottle which contains a hint paper.")
+        temp2 = int(input("Enter the temperature(to freeze or unfreeze the river): "))
+        print()
+        if temp2 == 100:
+            print("River is unfreezing...")
+            print()
+            print("""Hints:
+The Fire Container must be the hottest.
+The Water Container is cooler than the Earth Container.
+The Air Container is warmer than the Water Container but cooler than the Fire Container.
+The total of all temperatures should equal 180°C.""")
+            print()
+        else:
+            print("The river is not unfreezing. You can't view the hint. ")
+    
+    while True:
+        container = input("Enter the container you want to adjust (Fire, Water, Earth, Air Container) or 'exit' to quit: ").title().strip()
+        print()
+        if container.lower() == 'exit':
+            break
+        
+        if container in container_temperatures:
+            try:
+                new_temperature = int(input(f"Enter new temperature for {container}: ").strip())
+                container_temperatures[container] = new_temperature
+                print(f"{container} is now set to {new_temperature}°C.")
+                print()
+            except ValueError:
+                print("Invalid input. Please enter a numeric value.")
+        else:
+            print("Invalid container. Please enter a valid container name.")
+        
+        display_puzzle_instructions()
+        
+        if check_puzzle_solution():
+            print("\nCongratulations! You have balanced the elements correctly and unlocked the next chamber.")
+            return True
+        else:
+            print("\nThe temperatures are not balanced correctly. Keep trying!")
+
+def play_temperature_control_test():
+    display_chamber()
+    
+    if play_temperature_control_puzzle():
+        return True
+    return False
+
+
