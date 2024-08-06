@@ -1,15 +1,10 @@
-''''''
-
-
-
 import pyttsx3
 
-engine=pyttsx3.init()
-
 def speak(text):
-    engine.say(text) # text is the string that you want to be spoken out loud by your computer's built-in speech synthesizer engine.
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')       #getting details of current voice
+    #engine.setProperty('voice', voices[0].id)  #changing index, changes voices. o for male
+    engine.setProperty('voice', voices[1].id) 
+    engine.setProperty("rate", 150) 
+    engine.say(text)
     engine.runAndWait()
-
-task_completed = 2
-
-

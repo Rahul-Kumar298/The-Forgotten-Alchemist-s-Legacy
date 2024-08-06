@@ -1,11 +1,7 @@
-from speak import speak
+from speak import speak   
 
-def play_wind_direction_puzzle():
-    intro = "You step into a vast, ethereal chamber filled with a tangible energy, illuminated by a soft, otherworldly glow. The walls depict the element of air in various forms, while objects float and rotate in mid-air. At the center, a grand pedestal holds an ancient tome surrounded by intricate mechanisms and devices, all designed to test your mastery of the air element. Navigate these challenges, using your wits and alchemical knowledge to manipulate the currents of air, solve the puzzles, and unlock the Air Elemental Key. The journey will test your perception, agility, and intellect, but the rewards will be great."
+intro = "A feeling of elation overwhelms you as you move in the realm of the wind. The chamber was immense, and the twitch of wind seemed to carry the rustling of an old past. Ethereal stages of condensed sky floating in midspace, establishing a way of change and transformation. The walls are decorated with intricate symbologies that glow in a soft blue light, hinting at secrets that are yet to be revealed. Lead the way through the current changing aerial maze, decipher the wind puzzle, and harness the power of the vapor to discover the crucial hidden within the confines of."
 
-    print(("Welcome to the Realm Of Air!").center(120))
-    speak("Welcome to the Realm Of Air!")
-    print()
-    print(intro)
+print(intro)
+speak(intro)
 
-play_wind_direction_puzzle()

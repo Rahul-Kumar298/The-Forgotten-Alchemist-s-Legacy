@@ -56,7 +56,7 @@ def play_flame_symbol_puzzle():
     speak("Welcome to the Wings of Fire!")
     print()
     intro = """\
-"Wings of Fire" is an infernal chamber within the legendary alchemist's tower, enveloped in an eternal blaze. Its walls flicker with ancient alchemical symbols, puzzles intertwined with the essence of combustion. Fiery guardians prowl, challenging intruders with their blazing might. Only those who master the art of controlling flames and deciphering the secrets of alchemy can survive its scorching trials and unlock the elemental mysteries within."""
+'' Wings of Combustion '' is an infernal chamber inside the legendary alchemist's tower, enveloped in an ageless fire. Their walls were flickering with an old alchemic symbol, puzzle entangled in the nature of combustion. The fierce guards were prowling, challenging the intruder with their blazing fire. Only the one who knows how to control fire and deciphers the secret of chemistry can pass the strictest test and discover the secret of the elemental mystery inside."""
     print(intro)
     print()
     print("You encounter a stone tablet adorned with glowing symbols.")
@@ -108,7 +108,7 @@ def display_chamber():
         print()
         speak(f"The temperature is set to {temp}°C.")
 
-        if temp == 0:
+        if temp <= 0:
             print("River is freezing...")
             speak("River is freezing...")
             print("Now you can cross the river.")
@@ -160,7 +160,7 @@ def play_temperature_control_puzzle():
         print("Inside the frozen river there is a glass bottle which contains a hint paper.")
         temp2 = int(input("Enter the temperature(to freeze or unfreeze the river): "))
         print()
-        if temp2 == 100:
+        if temp2 >= 100:
             print("River is unfreezing...")
             speak("River is unfreezing...")
             print()
@@ -206,10 +206,10 @@ def play_temperature_control_test():
         return True
     return False
 
-# Blazing Bridge Trap Implementation
 def blazing_bridge_trap():
-    correct_path = [(0, 0), (1, 0), (2, 1), (3, 1), (4, 2), (3, 3), (2, 4), (1, 3), (0, 4)]
-    
+    # Correct path, ensure this matches the actual solution path
+    correct_path = [(0, 0), (1, 0), (1, 1), (2, 1), (2, 2), (3, 2), (4, 2), (4, 3), (4, 4)]
+
     print("\nYou step onto a narrow bridge that leads to the Fiery Guardian's chamber.")
     print("The bridge is rigged with pressure plates that trigger fire traps.")
     print("You must choose the correct sequence of steps to avoid falling into the fire pit below.")
@@ -219,13 +219,11 @@ def blazing_bridge_trap():
     speak("You must choose the correct sequence of steps to avoid falling into the fire pit below.")
     
     # Display the bridge with start and end points
-    print("Start point -> O X O O O <- End point")
+    print("Start point -> O X O O O")
     print("               O O X O X")
     print("               X O O X O")
-    print("               O O X O O")
     print("               O X O X O")
-
-    
+    print("               X X O O O <- End point")
 
     while True:
         print("\nEnter your sequence of steps as row,col pairs (e.g., '0,0 1,0 2,1 ...')")
@@ -237,6 +235,9 @@ def blazing_bridge_trap():
             print("Invalid input. Please enter your steps in the correct format.")
             continue
         
+        print(f"Player steps: {player_steps}")
+        print(f"Correct path: {correct_path}")
+
         if player_steps == correct_path:
             print("\nYou successfully navigate the bridge and reach the other side.")
             speak("You successfully navigate the bridge and reach the other side.")
@@ -244,18 +245,210 @@ def blazing_bridge_trap():
         else:
             print("\nYou triggered a fire trap! Try again.")
             speak("You triggered a fire trap! Try again.")
-            
             return False
 
 
 def fiery_guardian_combat():
-    print("Deep within the alchemist's tower, a searing heat heralds the arrival of the Fiery Guardian. Clad in flames and towering before you, its eyes blaze with elemental power. The air crackles with anticipation as you face a choice: confront the guardian in battle or unlock its secrets through ancient puzzles. Your path forward hinges on this fiery trial.")
-    print("You can battle a combat with guardian or solve the puzzles to pacify the guardian.")
-    decision = int(input("Enter 1 for combat or 2 for solve the puzzle."))
-    if decision == 1:
-        pass
-    elif decision == 2:
-        pass
+    print("The arrival of the Fiery guardian is announced deep within the walls of the alchemist's tower. They are dressed in flame and loom ahead of you, and their eyes are blazed with elemental power. The atmosphere trembles with anticipation as you make a choice: face your enemy in battle or reveal a secret using an ancient puzzle. This relentless test is a cornerstone of your journey forward.")
+    print("You can battle the guardian in combat or solve the puzzles to pacify the guardian.")
+    decision = input("Enter 1 for combat or 2 for solve the puzzles: ")
+
+    if decision == '1':
+        # Initialize player and guardian stats
+        player_health = 100
+        player_attack_power = 20
+        player_defense = 10
+
+        guardian_health = 80
+        guardian_attack_power = 15
+
+        # Function to simulate player's turn
+        def player_turn():
+            print("\nPlayer's Turn")
+            action = input("Choose your action (attack / defend): ").strip().lower()
+
+            if action == "attack":
+                nonlocal guardian_health
+                guardian_health -= player_attack_power
+                print(f"You attack the guardian! Guardian's health is now {guardian_health}")
+            elif action == "defend":
+                nonlocal player_health
+                # Reduce incoming damage by player's defense
+                player_health -= max(0, guardian_attack_power - player_defense)
+                print(f"You defend against the guardian's attack! Your health is now {player_health}")
+            else:
+                print("Invalid action. Please choose attack or defend.")
+
+        # Function to simulate guardian's turn
+        def guardian_turn():
+            print("\nGuardian's Turn")
+            nonlocal player_health
+            # Simulate guardian's attack
+            player_health -= guardian_attack_power
+            print(f"The guardian attacks! Your health is now {player_health}")
+
+        # Main combat loop
+        while player_health > 0 and guardian_health > 0:
+            player_turn()
+            if guardian_health <= 0:
+                print("\nYou defeated the guardian!")
+                speak("You defeated the guardian!")
+                break
+            guardian_turn()
+            if player_health <= 0:
+                print("\nYou were defeated by the guardian!")
+                speak("You were defeated by the guardian!")
+                break
+
+        # Post-battle outcome
+        if player_health > 0:
+            print("\nCongratulations! You won the battle!")
+            speak("Congratulations! You won the battle!")
+            return True
+            
+        else:
+            print("\nGame Over. You lost the battle.")
+            speak("Game Over")
+
+    elif decision == '2':
+        print("\nGuardian: You have to solve the three puzzles that I asked you.")
+        speak("You have to solve the three puzzle that I asked you.")
+        print("\nThe first Puzzle is The Enchanted Forest")
+        speak("The first Puzzle is The Enchanted Forest")
+        puzzle1 = "You are wandering through an enchanted forest and come across a fork in the path. One path leads to a treasure chest guarded by a friendly dragon. The other path leads to a trap door that drops you into a pit. There are two forest guides, one who always tells the truth and the other who always lies. You can ask only one question to find the path to the treasure. What do you ask?"
+        options1 = """A) "Would the other guide say the treasure is on the left path?"
+B) "Is the treasure on the left path?"
+C) "Is the treasure on the right path?"
+D) "Which path would you take to find the treasure?" """
+        print(puzzle1)
+        speak(puzzle1)
+        print("Your options are:")
+        print(options1)
+        answer1 = input("Enter your choice (A, B, C, D): ").strip().upper()
+
+        if answer1 == 'A':
+            print("\nCorrect! Well done.")
+            print("\nThe second Puzzle is The Lost Key")
+            speak("The second Puzzle is The Lost Key")
+            puzzle2 = "You find yourself in a room with three keys: gold, silver, and bronze. Each key opens a different chest, but only one chest contains the ultimate treasure. There are two inscriptions on the walls: 'The bronze key is not in the middle' and 'The ultimate treasure is not in the chest opened by the gold key.' Which key opens the chest with the ultimate treasure?"
+            options2 = """A) Gold
+B) Silver
+C) Bronze
+D) None of the above"""
+            print(puzzle2)
+            speak(puzzle2)
+            print("Your options are:")
+            print(options2)
+            answer2 = input("Enter your choice (A, B, C, D): ").strip().upper()
+
+            if answer2 == 'B':
+                print("\nCorrect! Excellent job.")
+                print("\nThe third Puzzle is The Starry Night")
+                speak("The third Puzzle is The Starry Night")
+                puzzle3 = """You are gazing at the starry night sky when you notice three constellations: Draco, Orion, and Ursa Major. Each constellation contains stars of different colors: red, blue, and yellow. The red star is not in Draco, the blue star is not in Orion, and the yellow star is not in Ursa Major. Which constellation contains the red star?"""
+                options3 = """A) Draco
+B) Ursa Major
+C) Orion
+D) None of the above"""
+                print(puzzle3)
+                speak(puzzle3)
+                print("Your options are:")
+                print(options3)
+                answer3 = input("Enter your choice (A, B, C, D): ").strip().upper()
+
+                if answer3 == 'B':
+                    print("\nCorrect! You have solved all the puzzles.")
+                    speak("Correct! You have solved all the puzzles.")
+                    print("\nThe Guardian is pleased and grants you passage. You may proceed!")
+                    return True
+                else:
+                    print("\nIncorrect answer. The Guardian is not convinced. Game Over.")
+                    speak("Game Over")
+
+            else:
+                print("\nIncorrect answer. The Guardian is not convinced. Game Over.")
+                speak("Game Over")
+
+        else:
+            print("\nIncorrect answer. The Guardian is not convinced. Game Over.")
+            speak("Game Over")
+
     else:
-        print("Invalid input. Please enter a valid numeric value.")
+        print("\nInvalid input. Please enter '1' or '2'.")
+
+
+def Alchemy_Recipe_Riddle():
+    print("The game starts off in the chamber \"Wings of Fire\" you will be encountering a major puzzle with an alchemical apparatus and it cannot. Meaning you have to make a special drugged potion in order for the raging inferno and heat can rage without killing u. Before you, sets a riddle that points the way to which concoction of items is correct based on their numerical value. Once you have solved the riddle and prepared this potion, pour it onto the flames to neutralize them - doing so will also allow you to proceed further into that particular chamber.")
+
     
+    def alchemical_apparatus():
+        import time
+
+        print("You arrive at the mystical alchemical workbench. It's covered with intricate carvings and various alchemical tools.")
+        print("In front of you, a stone plaque on the wall begins to glow, revealing an inscription.")
+        time.sleep(2)
+
+        riddle = (
+            "\nTo calm the raging fire, three things you need,\n"
+            "Mix them together with great care, indeed.\n"
+            "First, the warmth of the sun, shining bright,\n"
+            "Next, the breath of a storm, cool and light.\n"
+            "Lastly, the water from the earth, refreshing and clear,\n"
+            "Combine them well, and the fire will disappear.\n"
+            "The sun's warmth is like golden rays,\n"
+            "The storm's breath is a cool breeze that sways,\n"
+            "The earth's water is a clear, cool stream,\n"
+            "What potion will you make to end this fiery dream?\n"
+        )
+        
+        print(riddle)
+        time.sleep(2)
+        
+        # Ingredients available
+        ingredients = {
+            "Sulfur": "Warmth of the Sun",
+            "Nitrogen": "Breath of a Storm",
+            "Water": "Water from the Earth"
+        }
+        
+        # User input to mix ingredients
+        print("You need to choose the right ingredients to mix.")
+        print("Here are the available ingredients:")
+        
+        for ingredient, description in ingredients.items():
+            print(f"{ingredient}: {description}")
+        
+        chosen_ingredients = []
+        
+        while len(chosen_ingredients) < 3:
+            ingredient = input("\nEnter the name of an ingredient to add to the mix: ").strip()
+            if ingredient in ingredients and ingredient not in chosen_ingredients:
+                chosen_ingredients.append(ingredient)
+                print(f"{ingredient} added to the mix.")
+            else:
+                print("Invalid ingredient or already added. Please choose a different ingredient.")
+        
+        # Check if the correct ingredients were chosen
+        if set(chosen_ingredients) == {"Sulfur", "Nitrogen", "Water"}:
+            print("\nYou carefully mix the ingredients together in the cauldron.")
+            time.sleep(2)
+            print("The mixture bubbles and glows, creating a shimmering potion.")
+            time.sleep(2)
+            print("You have created the Fire Extinguishing Elixir!")
+            time.sleep(2)
+            print("You use the potion to neutralize the flames in the chamber.")
+            time.sleep(2)
+            print("The flames die down, allowing you to safely proceed further into the chamber.")
+        else:
+            print("\nYou mix the ingredients together, but nothing happens.")
+            time.sleep(2)
+            print("It seems you didn't use the right combination of ingredients.")
+            time.sleep(2)
+            print("The flames continue to burn fiercely, blocking your path.")
+            time.sleep(2)
+            print("You'll need to try again and choose the correct ingredients.")
+
+    # Start the alchemical apparatus puzzle
+    alchemical_apparatus()
+
+
