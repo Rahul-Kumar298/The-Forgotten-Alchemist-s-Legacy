@@ -1,6 +1,6 @@
-import random
+import random, time
 from speak import speak
-
+from counttime import countdown_timer,sleep
 # Define the symbols and their meanings (example symbols)
 symbols = {
     "🔥": "Ignition",
@@ -376,79 +376,237 @@ D) None of the above"""
     else:
         print("\nInvalid input. Please enter '1' or '2'.")
 
+def flame_whispers_riddles():
+    print("As you enter this chamber, a strange voice from a statue welcomes you.")
+    speak("Hello! I am the Soul of Fire. You seem to be quite interesting. You have cleared the previous obstacles, but your journey ends here if you cannot answer the questions I ask. And I  know that you will definitely not give the correct answer.")
+    speak("So be prepared and look at the inscription on the left wall.")
+    print("You have to answer five questions that the guardian asks. You have thirty seconds to answer each question and get three chances to respond. The guardian will speak the puzzle only once, so listen carefully. If you don't listen carefully and want to hear it again, you will lose a chance.")
+    sleep(5)
+    riddle = ["I am not alive, but I grow; I don't have lungs, but I need air; I have no mouth, but water kills me. What am I?","Until I am measured, I am not known. Yet you miss me, when I have flown. What am I?","Some try to hide, some try to cheat, but time will show, we always will meet. Try as you might, to guess my name, I promise you'll know, when you do claim. Who am I?","What goes through cities and fields, but never moves?","If you drop me I am sure to crack, but give me a smile and I will always smile back. What am I?"]
+    answers = ["Fire", "Time","Death","Road","Mirror"]
+    count = 0
+    for i in range(len(riddle)):
+        print("The riddle is ")
+        j = 0
+        while j < 3:
+            speak(riddle[i])
+            countdown_timer(20)
+            answer = input("Enter the answer of the riddle : ")
+            if answer.lower() == answers[i].lower():
+                count +=1
+                speak("Interesting. You are quite impressive.")
+                print("The flare of the flame decreases.")
+                sleep(3)
+                break
+            print("The flare of the flame increases.")
+            j +=1
+        if j == 3:  # Check if the player has used all attempts
+            speak(f"You have used all your chances for this riddle. The correct answer was '{answers[i]}'.")
+    if count == 5:
+        speak("Your knowledge is unmeasurable. And I am amazed with your skills so I think that you can definately get the fire elemental key. Best of luck! and remember your most powerful weapon is your mind.")
+    else:
+        speak("As I say your journey ends here and you are not allow to go further.")
+        print("Game Over.")
+        print("Better Luck next time!")
 
-def Alchemy_Recipe_Riddle():
-    print("The game starts off in the chamber \"Wings of Fire\" you will be encountering a major puzzle with an alchemical apparatus and it cannot. Meaning you have to make a special drugged potion in order for the raging inferno and heat can rage without killing u. Before you, sets a riddle that points the way to which concoction of items is correct based on their numerical value. Once you have solved the riddle and prepared this potion, pour it onto the flames to neutralize them - doing so will also allow you to proceed further into that particular chamber.")
 
-    
-    def alchemical_apparatus():
-        import time
 
-        print("You arrive at the mystical alchemical workbench. It's covered with intricate carvings and various alchemical tools.")
-        print("In front of you, a stone plaque on the wall begins to glow, revealing an inscription.")
-        time.sleep(2)
+# Function to simulate damage and display health
+def take_damage(damage):
+    global player_health
+    player_health -= damage
+    print(f"Flames burst from the board! You take {damage} damage. Current health: {player_health}")
+    if player_health <= 0:
+        print("You have been consumed by the flames. Game Over!")
+        return False
+    return True
 
-        riddle = (
-            "\nTo calm the raging fire, three things you need,\n"
-            "Mix them together with great care, indeed.\n"
-            "First, the warmth of the sun, shining bright,\n"
-            "Next, the breath of a storm, cool and light.\n"
-            "Lastly, the water from the earth, refreshing and clear,\n"
-            "Combine them well, and the fire will disappear.\n"
-            "The sun's warmth is like golden rays,\n"
-            "The storm's breath is a cool breeze that sways,\n"
-            "The earth's water is a clear, cool stream,\n"
-            "What potion will you make to end this fiery dream?\n"
-        )
+def combustion_chess():
+    global player_health
+    player_health = 100  # Initial health
+    max_mistakes = 2  # Allow more mistakes
+    mistakes = 0
+    time_limit = 20  # seconds per move (longer time)
+
+    # Correct sequence based on the clues (easier version)
+    correct_sequence = ["Knight", "Bishop", "Queen", "Rook", "King"]
+
+    # Available pieces to move
+    pieces = ["Rook", "King", "Bishop", "Knight", "Queen"]
+    random.shuffle(pieces)  # Shuffle pieces to make it less predictable
+
+    # Introduction
+    print("You stand before the Combustion Chessboard.")
+    print("The floor glows with fiery runes, a chessboard where only the correct sequence of moves will let you pass.")
+    print("Incorrect moves will trigger flames, testing your resolve and health.")
+    print()
+
+    print("You notice runes glowing faintly beneath the chess pieces, each symbol hinting at the path.")
+    print("Available pieces to move:")
+    for i, piece in enumerate(pieces, 1):
+        print(f"{i}. {piece}")
+
+    # Game logic with a time limit and consequences for incorrect moves
+    for move_number in range(1, len(correct_sequence) + 1):
+        print(f"\nYou have {time_limit} seconds to make your move!")
         
-        print(riddle)
-        time.sleep(2)
-        
-        # Ingredients available
-        ingredients = {
-            "Sulfur": "Warmth of the Sun",
-            "Nitrogen": "Breath of a Storm",
-            "Water": "Water from the Earth"
-        }
-        
-        # User input to mix ingredients
-        print("You need to choose the right ingredients to mix.")
-        print("Here are the available ingredients:")
-        
-        for ingredient, description in ingredients.items():
-            print(f"{ingredient}: {description}")
-        
-        chosen_ingredients = []
-        
-        while len(chosen_ingredients) < 3:
-            ingredient = input("\nEnter the name of an ingredient to add to the mix: ").strip()
-            if ingredient in ingredients and ingredient not in chosen_ingredients:
-                chosen_ingredients.append(ingredient)
-                print(f"{ingredient} added to the mix.")
-            else:
-                print("Invalid ingredient or already added. Please choose a different ingredient.")
-        
-        # Check if the correct ingredients were chosen
-        if set(chosen_ingredients) == {"Sulfur", "Nitrogen", "Water"}:
-            print("\nYou carefully mix the ingredients together in the cauldron.")
-            time.sleep(2)
-            print("The mixture bubbles and glows, creating a shimmering potion.")
-            time.sleep(2)
-            print("You have created the Fire Extinguishing Elixir!")
-            time.sleep(2)
-            print("You use the potion to neutralize the flames in the chamber.")
-            time.sleep(2)
-            print("The flames die down, allowing you to safely proceed further into the chamber.")
+        # Display hint/riddle before each move
+        if move_number == 1:
+            print("Clue 1: 'I leap over others, swift and unpredictable.'")  # Knight's ability to leap over pieces
+        elif move_number == 2:
+            print("Clue 2: 'I move diagonally, wise and graceful.'")  # Bishop's diagonal movement
+        elif move_number == 3:
+            print("Clue 3: 'I can move in any direction, the most powerful.'")  # Queen's flexibility
+        elif move_number == 4:
+            print("Clue 4: 'I move straight, side to side, and stand tall.'")  # Rook's straight movement
+        elif move_number == 5:
+            print("Clue 5: 'I can only move one square at a time, but I am the leader.'")  # King’s cautious movement
+
+        # Ask the player to choose a piece to move, with a timer
+        start_time = time.time()
+        player_choice = input(f"Choose piece to move for step {move_number}: ")
+
+        # Check if player runs out of time
+        if time.time() - start_time > time_limit:
+            print("You took too long! The flames burst from the board.")
+            if not take_damage(15):  # Reduced damage for taking too long
+                break
+            continue
+
+        # Check if the player's choice matches the correct move
+        if pieces[int(player_choice)-1] == correct_sequence[move_number - 1]:
+            print(f"Correct! You moved the {pieces[int(player_choice)-1]} safely.")
         else:
-            print("\nYou mix the ingredients together, but nothing happens.")
-            time.sleep(2)
-            print("It seems you didn't use the right combination of ingredients.")
-            time.sleep(2)
-            print("The flames continue to burn fiercely, blocking your path.")
-            time.sleep(2)
-            print("You'll need to try again and choose the correct ingredients.")
+            mistakes += 1
+            print(f"Wrong move! The {pieces[int(player_choice)-1]} triggered flames!")
+            if mistakes > max_mistakes:
+                print("Too many mistakes! The flames overwhelm you.")
+                print("Game Over!")
+                break
+            if not take_damage(10):  # Reduced damage for incorrect moves
+                break
 
-    # Start the alchemical apparatus puzzle
-    alchemical_apparatus()
+    # Check if the player successfully completed the puzzle
+    if player_health > 0 and mistakes <= max_mistakes:
+        print("\nCongratulations! You solved the Combustion Chess puzzle.")
+        print("The hidden passage is unlocked, and you may proceed.")
+    else:
+        print("\nYou failed the puzzle. Try again.")
 
+
+def fire_trap_mechanism():
+    print("\n*** Fire Trap Mechanism Challenge ***\n")
+    print("You enter a narrow hallway filled with fire traps.")
+    print("Some traps are triggered by changes in temperature, while others respond to movement.")
+    print("You notice a set of levers and dials on the wall at the end of the hallway.")
+
+    # Step 1: Initial trap observation
+    print("\nStep 1: Observe the fire traps carefully.")
+    print("You notice that the fire bursts every 5 seconds.")
+    
+    # Simulating trap observation
+    for i in range(3):
+        time.sleep(5)
+        print(f"Fire bursts! (Cycle {i+1})")
+
+    # Step 2: Movement-based traps
+    print("\nStep 2: Dealing with movement-sensitive pressure plates.")
+    print("You need to deactivate the pressure plates.")
+    
+    input("To deactivate the pressure plates, pull the correct lever (press Enter to continue)...")
+    
+    # Lever choice: right lever deactivates, wrong lever results in failure
+    lever_choice = input("Which lever do you pull? (1 for left, 2 for right): ").strip()
+    
+    if lever_choice == "2":
+        print("\nYou pulled the right lever and deactivated the pressure plates.")
+    else:
+        print("\nYou pulled the wrong lever! Flames erupt from the ground!")
+        print("Game Over. Try again.")
+        return
+    
+    # Step 3: Temperature control
+    print("\nStep 3: Adjust the room's temperature to safely cross.")
+    print("The room has two temperature controls: hot and cold.")
+    
+    temp_choice = input("Do you set the room to (1) hot or (2) cold? ").strip()
+
+    if temp_choice == "2":
+        print("\nYou set the room temperature to cold, calming the flames.")
+    else:
+        print("\nYou set the room temperature to hot, triggering more flames!")
+        print("Game Over. Try again.")
+        return
+    
+    # Step 4: Safely crossing the fire traps
+    print("\nThe traps have been disarmed, and the flames have subsided.")
+    print("You carefully proceed through the hallway and reach the other side safely.")
+    print("Congratulations! You've passed the Fire Trap Mechanism challenge.")
+
+def path_of_infernos():
+    print("You step into the Path of Infernos.")
+    print("The walls glow with rhythmic bursts of fire, and the air feels heavy with heat.")
+    speak("The fire dances to a rhythm. Watch, and the path will reveal itself.")
+    print("\nYour objective: Navigate through the maze, avoid the flames, and solve the puzzle to reach the pedestal.\n")
+
+    # Step 1: Observe Flame Patterns
+    print("The flames burst in the following pattern: (ON for 2 seconds, OFF for 3 seconds)")
+    print("Hint: Move only during the OFF state.")
+    input("Press Enter to continue...")
+
+    # Step 2: Navigate the First Segment
+    print("\n--- First Segment: Simple Timing ---")
+    for i in range(3):  # Three flame bursts
+        print("The flames are ON!")
+        time.sleep(2)
+        print("The flames are OFF! Move quickly!")
+        move = input("Type 'move' to advance: ").strip().lower()
+        if move != "move":
+            print("You hesitated and got burned! Try again.")
+            return False
+    print("You have successfully crossed the first segment!\n")
+
+    # Step 3: Avoid Hidden Pressure Plates
+    print("--- Second Segment: Hidden Pressure Plates ---")
+    safe_path = random.randint(1, 3)  # Randomly set the safe path (1, 2, or 3)
+    print("There are three paths ahead. Only one is safe. Choose wisely.")
+    choice = int(input("Choose a path (1, 2, or 3): "))
+    if choice != safe_path:
+        print("You triggered a pressure plate! Flames engulf you. Try again.")
+        return False
+    print("You avoided the traps and moved forward!\n")
+
+    # Step 4: Solve the Lever Puzzle
+    print("--- Third Segment: Solve the Puzzle ---")
+    print("You reach a row of levers blocking the path. Rearrange the symbols to disable the fire traps.")
+    puzzle_solution = "132"  # Correct lever order
+    attempt = input("Enter the correct lever order (e.g., 132): ").strip()
+    if attempt != puzzle_solution:
+        print("The levers were incorrect! Flames erupt from the walls. Try again.")
+        return False
+    print("The traps are disabled, and the path is clear!\n")
+
+    # Step 5: Navigate Final Stretch
+    print("--- Final Segment: Erratic Flames ---")
+    print("The flames now burst unpredictably. Observe carefully and time your moves.")
+    success = False
+    for i in range(3):
+        flame_state = random.choice(["ON", "OFF"])
+        print(f"The flames are {flame_state}!")
+        if flame_state == "ON":
+            print("Wait for the flames to go OFF.")
+            time.sleep(1)
+        else:
+            move = input("Type 'move' to advance: ").strip().lower()
+            if move != "move":
+                print("You hesitated and got burned! Try again.")
+                return False
+            success = True
+    if not success:
+        print("You failed to cross the final stretch. Try again.")
+        return False
+
+    # Step 6: Reach the Pedestal
+    print("\nCongratulations! You have reached the pedestal and claimed the key to the Path of Infernos.")
+    return True
 

@@ -67,7 +67,7 @@ if c2.capitalize() == "Fire":
     print("You guessed the right place. You are going to 'Wings of Fire - Fire Chamber', a great place full of adventures.")
 
     print()
-    from fire_chamber import play_flame_symbol_puzzle, play_temperature_control_test, blazing_bridge_trap, fiery_guardian_combat, Alchemy_Recipe_Riddle
+    from fire_chamber import play_flame_symbol_puzzle, play_temperature_control_test, blazing_bridge_trap, fiery_guardian_combat, flame_whispers_riddles, combustion_chess
     # Main game logic
     task_completed = 0
 
@@ -80,19 +80,21 @@ if c2.capitalize() == "Fire":
             print()
             print()
             if blazing_bridge_trap():
-                task_completed += 1
                 if fiery_guardian_combat():
                     task_completed += 1
                     print()
                     print()
-                    if Alchemy_Recipe_Riddle():
-                        task_completed+=1
+                    if flame_whispers_riddles():
+                        task_completed += 1
                         print()
                         print()
-    print(f"Tasks completed: {task_completed}")
-    speak(f"You have completed {task_completed} tasks out of 20 tasks to get the fire elemental key.")
+                        if combustion_chess():
+                            task_completed += 1
+                            print()
+                            print()
+    speak(f"You have completed all the tasks and get the fire elemental key.")
 
-    if task_completed == 20:
+    if task_completed == 10:
         print("Place the Fire Elemental Key upon the letter to get the next puzzle.")
         second_part_of_letter = """
 Congratulations, Seeker.
@@ -239,23 +241,43 @@ Good luck, adventurer. The end of your quest is near."""
                                         final_part_of_letter ="""
 Congratulations, Seeker.
 
-You have traversed the trials and secured all five keys: Fire, Water, Air, Earth, and the final one you have just acquired. As you place these keys upon this letter, a crucial step remains before you can unlock the true legacy of Professor Thaddeus Evergreen.
+You have traversed the trials and secured all five keys. As you place these keys upon this letter, a crucial step remains before you can unlock the true legacy of Professor Thaddeus Evergreen.
 
-Before you lies a grand door, the gateway to the heart of the alchemist’s legacy. To open this door, you must place each key in its rightful position according to the riddles you have solved. Each key corresponds to a specific place, and only by placing them correctly will you reveal the secrets within.
+Before you lies a grand door, the gateway to the heart of the alchemist’s legacy. To open this door, you must place each key in its rightful position according to the following riddle. Each key corresponds to a specific place, and only by placing them correctly will you reveal the secrets within.
 
-Refer to the riddles provided in the letters for guidance:
+Final Riddle:
 
-The Fire Key will find its place where the trials of flame are tested.
-The Water Key belongs where the currents of clarity and depth are revealed.
-The Earth Key should be set where the roots and strength of the land lie.
-The Air Key will be placed where the whispers and breezes of the ethereal realm flow.
-The final key, guided by the vast expanse of the cosmos, will complete the puzzle.
+"First, where strength and roots hold tight,
+Lay the symbol of ancient might.
+
+Second, where whispers ride the breeze,
+Place the token that moves with ease.
+
+Third, where shadows dance with light,
+Position the spark that burns so bright.
+
+Fourth, where reflections show what's pure,
+Set the emblem that flows secure.
+
+Last, where the endless void does trace,
+Put the sign from boundless space."
+
 Arrange the keys accordingly to unlock the door and gain access to the alchemist’s ultimate legacy. The path you have walked has led you to this final moment of discovery. Use your knowledge and insight to unveil what lies beyond.
 
 May your resolve be unwavering as you complete your journey and unlock the true secrets of Professor Evergreen’s Tower.
 
 With reverence and respect,
-The Guardians of the Tower"""
+The Guardians of the Tower
+
+Good luck, adventurer. The culmination of your quest awaits."""
+                                        print(final_part_of_letter)
+                                        print("(1 for fire, 2 for water, 3 for earth, 4 for air, and 5 for space)")
+                                        keys_order = input("Enter the order of keys (like 1,2,3,4,5):")
+                                        if keys_order == "3,4,1,2,5":
+                                            from final_part import *
+                                        else:
+                                            print("Incorrect order. Please try again.")
+
                                     else:
                                         print("You had not completed all the tasks.")
                                         print("Game Over")
