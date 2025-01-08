@@ -2,3 +2,5 @@ intro = "The Aqua Maze is a twisting, submerged tunnel system with water rushing
 
 print(intro)
 
+def play_with_water():
+    pass

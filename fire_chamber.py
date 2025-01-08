@@ -1,5 +1,5 @@
 import random, time
-from speak import speak
+# from speak import speak
 from counttime import countdown_timer,sleep
 # Define the symbols and their meanings (example symbols)
 symbols = {
@@ -53,7 +53,7 @@ def play_flame_symbol_puzzle():
     player_sequence = []
 
     print(("Welcome to the Wings of Fire!").center(120))
-    speak("Welcome to the Wings of Fire!")
+    # speak("Welcome to the Wings of Fire!")
     print()
     intro = """\
 '' Wings of Combustion '' is an infernal chamber inside the legendary alchemist's tower, enveloped in an ageless fire. Their walls were flickering with an old alchemic symbol, puzzle entangled in the nature of combustion. The fierce guards were prowling, challenging the intruder with their blazing fire. Only the one who knows how to control fire and deciphers the secret of chemistry can pass the strictest test and discover the secret of the elemental mystery inside."""
@@ -75,12 +75,12 @@ def play_flame_symbol_puzzle():
         
         if check_solution(player_sequence, correct_sequence):
             print("\nCongratulations! The symbols align perfectly, unlocking the chamber.")
-            speak("Congratulations! The symbols align perfectly, unlocking the chamber.")
+            # speak("Congratulations! The symbols align perfectly, unlocking the chamber.")
             return True
         else:
             print("\nThe symbols do not align correctly. You Lose!.")
             print("Game Over")
-            speak("Game Over")
+            # speak("Game Over")
             return False
 
 # Define initial temperature readings for various devices
@@ -93,7 +93,7 @@ temperature_readings = {
 
 def display_chamber():
     print("You are now inside the Wings Of Fire.")
-    speak("You are now inside the Wings Of Fire.")
+    # speak("You are now inside the Wings Of Fire.")
     print("Now you are in chamber which contains several temperature measuring devices. ")
     print()
     print("The chamber contains several devices showing temperature readings:")
@@ -106,11 +106,11 @@ def display_chamber():
     if c3 == "1":
         temp = int(input("Enter the temperature(to freeze or unfreeze the river): "))
         print()
-        speak(f"The temperature is set to {temp}°C.")
+        # speak(f"The temperature is set to {temp}°C.")
 
         if temp <= 0:
             print("River is freezing...")
-            speak("River is freezing...")
+            # speak("River is freezing...")
             print("Now you can cross the river.")
             print()
         else:
@@ -162,7 +162,7 @@ def play_temperature_control_puzzle():
         print()
         if temp2 >= 100:
             print("River is unfreezing...")
-            speak("River is unfreezing...")
+            # speak("River is unfreezing...")
             print()
             print("""Hints:
 The Fire Container must be the hottest.
@@ -186,15 +186,15 @@ The total of all temperatures should equal 180°C.""")
                 print(f"{container} is now set to {new_temperature}°C.")
                 print()
             except ValueError:
-                speak("Invalid input. Please enter a numeric value.")
+                print("Invalid input. Please enter a numeric value.")
         else:
-            speak("Invalid container. Please enter a valid container name.")
+            print("Invalid container. Please enter a valid container name.")
         
         display_puzzle_instructions()
         
         if check_puzzle_solution():
             print("\nCongratulations! You have balanced the elements correctly and unlocked the next section.")
-            speak("Congratulations! You have balanced the elements correctly and unlocked the next section.")
+            # speak("Congratulations! You have balanced the elements correctly and unlocked the next section.")
             return True
         else:
             print("\nThe temperatures are not balanced correctly. Keep trying!")
@@ -214,9 +214,9 @@ def blazing_bridge_trap():
     print("The bridge is rigged with pressure plates that trigger fire traps.")
     print("You must choose the correct sequence of steps to avoid falling into the fire pit below.")
     
-    speak("You step onto a narrow bridge that leads to the Fiery Guardian's chamber.")
-    speak("The bridge is rigged with pressure plates that trigger fire traps.")
-    speak("You must choose the correct sequence of steps to avoid falling into the fire pit below.")
+    # speak("You step onto a narrow bridge that leads to the Fiery Guardian's chamber.")
+    # speak("The bridge is rigged with pressure plates that trigger fire traps.")
+    # speak("You must choose the correct sequence of steps to avoid falling into the fire pit below.")
     
     # Display the bridge with start and end points
     print("Start point -> O X O O O")
@@ -240,11 +240,11 @@ def blazing_bridge_trap():
 
         if player_steps == correct_path:
             print("\nYou successfully navigate the bridge and reach the other side.")
-            speak("You successfully navigate the bridge and reach the other side.")
+            # speak("You successfully navigate the bridge and reach the other side.")
             return True
         else:
             print("\nYou triggered a fire trap! Try again.")
-            speak("You triggered a fire trap! Try again.")
+            # speak("You triggered a fire trap! Try again.")
             return False
 
 
@@ -292,36 +292,36 @@ def fiery_guardian_combat():
             player_turn()
             if guardian_health <= 0:
                 print("\nYou defeated the guardian!")
-                speak("You defeated the guardian!")
+                # speak("You defeated the guardian!")
                 break
             guardian_turn()
             if player_health <= 0:
                 print("\nYou were defeated by the guardian!")
-                speak("You were defeated by the guardian!")
+                # speak("You were defeated by the guardian!")
                 break
 
         # Post-battle outcome
         if player_health > 0:
             print("\nCongratulations! You won the battle!")
-            speak("Congratulations! You won the battle!")
+            # speak("Congratulations! You won the battle!")
             return True
             
         else:
             print("\nGame Over. You lost the battle.")
-            speak("Game Over")
+            # speak("Game Over")
 
     elif decision == '2':
         print("\nGuardian: You have to solve the three puzzles that I asked you.")
-        speak("You have to solve the three puzzle that I asked you.")
+        # speak("You have to solve the three puzzle that I asked you.")
         print("\nThe first Puzzle is The Enchanted Forest")
-        speak("The first Puzzle is The Enchanted Forest")
+        # speak("The first Puzzle is The Enchanted Forest")
         puzzle1 = "You are wandering through an enchanted forest and come across a fork in the path. One path leads to a treasure chest guarded by a friendly dragon. The other path leads to a trap door that drops you into a pit. There are two forest guides, one who always tells the truth and the other who always lies. You can ask only one question to find the path to the treasure. What do you ask?"
         options1 = """A) "Would the other guide say the treasure is on the left path?"
 B) "Is the treasure on the left path?"
 C) "Is the treasure on the right path?"
 D) "Which path would you take to find the treasure?" """
         print(puzzle1)
-        speak(puzzle1)
+        # speak(puzzle1)
         print("Your options are:")
         print(options1)
         answer1 = input("Enter your choice (A, B, C, D): ").strip().upper()
@@ -329,14 +329,14 @@ D) "Which path would you take to find the treasure?" """
         if answer1 == 'A':
             print("\nCorrect! Well done.")
             print("\nThe second Puzzle is The Lost Key")
-            speak("The second Puzzle is The Lost Key")
+            # speak("The second Puzzle is The Lost Key")
             puzzle2 = "You find yourself in a room with three keys: gold, silver, and bronze. Each key opens a different chest, but only one chest contains the ultimate treasure. There are two inscriptions on the walls: 'The bronze key is not in the middle' and 'The ultimate treasure is not in the chest opened by the gold key.' Which key opens the chest with the ultimate treasure?"
             options2 = """A) Gold
 B) Silver
 C) Bronze
 D) None of the above"""
             print(puzzle2)
-            speak(puzzle2)
+            # speak(puzzle2)
             print("Your options are:")
             print(options2)
             answer2 = input("Enter your choice (A, B, C, D): ").strip().upper()
@@ -344,43 +344,43 @@ D) None of the above"""
             if answer2 == 'B':
                 print("\nCorrect! Excellent job.")
                 print("\nThe third Puzzle is The Starry Night")
-                speak("The third Puzzle is The Starry Night")
+                # speak("The third Puzzle is The Starry Night")
                 puzzle3 = """You are gazing at the starry night sky when you notice three constellations: Draco, Orion, and Ursa Major. Each constellation contains stars of different colors: red, blue, and yellow. The red star is not in Draco, the blue star is not in Orion, and the yellow star is not in Ursa Major. Which constellation contains the red star?"""
                 options3 = """A) Draco
 B) Ursa Major
 C) Orion
 D) None of the above"""
                 print(puzzle3)
-                speak(puzzle3)
+                # speak(puzzle3)
                 print("Your options are:")
                 print(options3)
                 answer3 = input("Enter your choice (A, B, C, D): ").strip().upper()
 
                 if answer3 == 'B':
                     print("\nCorrect! You have solved all the puzzles.")
-                    speak("Correct! You have solved all the puzzles.")
+                    # speak("Correct! You have solved all the puzzles.")
                     print("\nThe Guardian is pleased and grants you passage. You may proceed!")
                     return True
                 else:
                     print("\nIncorrect answer. The Guardian is not convinced. Game Over.")
-                    speak("Game Over")
+                    # speak("Game Over")
 
             else:
                 print("\nIncorrect answer. The Guardian is not convinced. Game Over.")
-                speak("Game Over")
+                # speak("Game Over")
 
         else:
             print("\nIncorrect answer. The Guardian is not convinced. Game Over.")
-            speak("Game Over")
+            # speak("Game Over")
 
     else:
         print("\nInvalid input. Please enter '1' or '2'.")
 
 def flame_whispers_riddles():
     print("As you enter this chamber, a strange voice from a statue welcomes you.")
-    speak("Hello! I am the Soul of Fire. You seem to be quite interesting. You have cleared the previous obstacles, but your journey ends here if you cannot answer the questions I ask. And I  know that you will definitely not give the correct answer.")
-    speak("So be prepared and look at the inscription on the left wall.")
-    print("You have to answer five questions that the guardian asks. You have thirty seconds to answer each question and get three chances to respond. The guardian will speak the puzzle only once, so listen carefully. If you don't listen carefully and want to hear it again, you will lose a chance.")
+    # speak("Hello! I am the Soul of Fire. You seem to be quite interesting. You have cleared the previous obstacles, but your journey ends here if you cannot answer the questions I ask. And I  know that you will definitely not give the correct answer.")
+    # speak("So be prepared and look at the inscription on the left wall.")
+    # print("You have to answer five questions that the guardian asks. You have thirty seconds to answer each question and get three chances to respond. The guardian will speak the puzzle only once, so listen carefully. If you don't listen carefully and want to hear it again, you will lose a chance.")
     sleep(5)
     riddle = ["I am not alive, but I grow; I don't have lungs, but I need air; I have no mouth, but water kills me. What am I?","Until I am measured, I am not known. Yet you miss me, when I have flown. What am I?","Some try to hide, some try to cheat, but time will show, we always will meet. Try as you might, to guess my name, I promise you'll know, when you do claim. Who am I?","What goes through cities and fields, but never moves?","If you drop me I am sure to crack, but give me a smile and I will always smile back. What am I?"]
     answers = ["Fire", "Time","Death","Road","Mirror"]
@@ -389,23 +389,23 @@ def flame_whispers_riddles():
         print("The riddle is ")
         j = 0
         while j < 3:
-            speak(riddle[i])
+            # speak(riddle[i])
             countdown_timer(20)
             answer = input("Enter the answer of the riddle : ")
             if answer.lower() == answers[i].lower():
                 count +=1
-                speak("Interesting. You are quite impressive.")
+                # speak("Interesting. You are quite impressive.")
                 print("The flare of the flame decreases.")
                 sleep(3)
                 break
             print("The flare of the flame increases.")
             j +=1
         if j == 3:  # Check if the player has used all attempts
-            speak(f"You have used all your chances for this riddle. The correct answer was '{answers[i]}'.")
+            print(f"You have used all your chances for this riddle. The correct answer was '{answers[i]}'.")
     if count == 5:
-        speak("Your knowledge is unmeasurable. And I am amazed with your skills so I think that you can definately get the fire elemental key. Best of luck! and remember your most powerful weapon is your mind.")
+        print("Your knowledge is unmeasurable. And I am amazed with your skills so I think that you can definately get the fire elemental key. Best of luck! and remember your most powerful weapon is your mind.")
     else:
-        speak("As I say your journey ends here and you are not allow to go further.")
+        print("As I say your journey ends here and you are not allow to go further.")
         print("Game Over.")
         print("Better Luck next time!")
 
@@ -546,7 +546,7 @@ def fire_trap_mechanism():
 def path_of_infernos():
     print("You step into the Path of Infernos.")
     print("The walls glow with rhythmic bursts of fire, and the air feels heavy with heat.")
-    speak("The fire dances to a rhythm. Watch, and the path will reveal itself.")
+    # speak("The fire dances to a rhythm. Watch, and the path will reveal itself.")
     print("\nYour objective: Navigate through the maze, avoid the flames, and solve the puzzle to reach the pedestal.\n")
 
     # Step 1: Observe Flame Patterns
