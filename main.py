@@ -1,6 +1,7 @@
 import os
 from speak import speak
-def NewGame():
+import json
+def start_msg():
     clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
     clear()
 
@@ -11,14 +12,16 @@ def NewGame():
     print()
     overview = """The Forgotten Apprentice's Inheritance is a choose-your-own-adventure game in which you explore the empty Tower of Professor Thaddeus Evergreen, an infamous Alchemist. It is a game that is bursting with puzzles, moral questions, and even ending variations based on the chosen path of the player."""
     print(overview)
+    return input("\nStart(y/n):")
+    
 
-    intro = "The story also begins with getting a cryptic letter to investigate the tower of alchemy. Fire, Water, Air, Space, Earth that reveals hints in the letter to gain access into these secrets through five elemental keys. The quest starts from the time you land on an enchanted tower out in the middle of nowhere."
+def NewGame(game_state):
+    intro = "The story also begins with getting a cryptic letter to investigate the tower of alchemy in each chambers. Fire, Water, Air, Space, Earth that reveals hints in the letter to gain access into these secrets through five elemental keys. The quest starts from the time you land on an enchanted tower out in the middle of nowhere."
     print()
     print()
     print(intro)
     print()
     print()
-
     place = {
         "Wings Of Fire": "Fire Chamber",
         "Aqua Maze": "Water Chamber",
@@ -26,39 +29,98 @@ def NewGame():
         "Realm Of Air": "Air Chamber",
         "Astra Cosmo": "Space Chamber"
     }
-    place_list = list(place.values())
     for index, value in enumerate(place.values(), start=1):
         print(f"{index}. {value}")
 
-    choice = int(input("Enter the index for which chamber you want to go: "))
+    choice = int(input("Enter the index for which chamber you want to go or 0 to exit: "))
+    keys_collected = 0
     if choice== 1:
-        fire_chamber()
+        game_state["location"] = "Wings Of Fire"
+        if fire_chamber():
+            keys_collected+=1
     elif choice == 2:
-        water_chamber()
+        game_state["location"] = "Aqua Maze"
+        if water_chamber():
+            keys_collected +=1
     elif choice == 3:
-        earth_chamber()
+        game_state["location"] = "Earth Nexus"
+        if earth_chamber():
+            keys_collected +=1
     elif choice == 4:
-        air_chamber()
+        game_state["location"] = "Realm Of Air"
+        if air_chamber():
+            keys_collected +=1
     elif choice == 5:
-        space_chamber()
+        game_state["location"] = "Astra Cosmo"
+        if space_chamber():
+            keys_collected +=1
+    elif choice ==0:
+        exit_game()
     else:
         print("Enter a correct index")
+    if keys_collected == 5:
+        if display_final_msg():
+            if play_final_part():
+                print("You have succesfully completed the ") # complete it
+                last_choice = input("Do you want to restart? (y/n) ")
+                if last_choice.lower() == "y":
+                    restart_game()
+                else:
+                    end_game()
 
-def display_initial_msg(letter):
+def display_initial_msg(letter, element = ""):
     print()
     print("The letter has the following message:")
-    print(letter)
-
-def fire_chamber():
-    letter = """
+    print("""
 Dear Seeker of Knowledge,
 
 You have been chosen for a task of great importance and mystery. Professor Thaddeus Evergreen, the renowned and enigmatic alchemist, has left behind a legacy that awaits only the most worthy to uncover. His tower, shrouded in secrets and brimming with puzzles, calls to you.
 
 In the heart of this tower lie the five elemental keys: Fire, Water, Air, Space, and Earth. Each key holds the power to unlock the profound mysteries of alchemy and reveal truths long hidden from the world. Your journey begins at the tower, an enchanted bastion of arcane wisdom, standing isolated in a forgotten land.
 
-To commence your quest, you must solve the first of many puzzles. Within the pages of this letter, a clue awaits you. Read carefully and heed the words, for they will guide you through the initial trial.
+To commence your quest, you must solve the following puzzle to unlock the chamber gate. Within the pages of this letter, a clue awaits you. Read carefully and heed the words, for they will guide you through the initial trial.
+""")
+    print(letter)
+    print("""
+Find the answer, and you shall begin your journey into the depths of Professor Evergreen’s tower. Each elemental key is guarded by challenges that will test your wit, resolve, and moral compass. Choose wisely, for the path you take will shape your destiny and the fate of the alchemist's legacy.
 
+May your mind be sharp and your heart steadfast.
+
+With anticipation,
+The Guardians of the Tower
+
+Good luck, adventurer. The tower awaits.""")
+    choice2 = input("Enter the answer to the puzzle or 0 to exit: ")
+    if choice2 == 0:
+        exit_game()
+    elif choice2.capitalize() == element:
+      print(f"You guess it right. The gate of {element} is opening. Have a great adventure.")
+      return True
+    
+def gamelogic(games, element):
+    task_completed = 0 
+    for game in games: 
+        while True: 
+            if game(): # Call the function 
+                if element != "blazing_bridge_trap":
+                    task_completed += 1 
+                    break # Move to the next game 
+                else:
+                    task_completed +=0
+                    break
+            else: 
+                print("You failed to complete the current puzzle.") 
+                choice = input("Would you like to try again (y/n)? ") 
+                if choice.lower() != 'y': 
+                    print("Exiting the game. Better luck next time!")
+                    exit_game()
+                else:
+                    print("Restarting the puzzle. Give it another shot!")
+                    restart_puzzle(game)             
+    return task_completed # Exit the game return task_completed task_completed
+
+def fire_chamber(game_state):
+    letter = """
 "I am a dancer, bright and bold,
 Yet in my presence, none can hold.
 I consume all, yet give new life,
@@ -66,279 +128,188 @@ In my heart, both warmth and strife.
 Tame me, and your path is clear,
 But lose control, and you must fear.
 What am I?"
+"""
+    if  display_initial_msg(letter, "Fire"):
+        from fire_chamber import play_flame_symbol_puzzle, play_temperature_control_test, blazing_bridge_trap, fiery_guardian_combat, flame_whispers_riddles, combustion_chess, fire_trap_mechanism, path_of_infernos
+        game_array_fire = [play_flame_symbol_puzzle, play_temperature_control_test, blazing_bridge_trap, fiery_guardian_combat, flame_whispers_riddles, combustion_chess, fire_trap_mechanism, path_of_infernos]
+        tasks = gamelogic(game_array_fire, "blazing_bridge_trap")
+        if tasks == 10:
+            print("You have succesfully completed all the tasks and claimed the fire elemental key.")
+            return True
+        else: 
+            choice3 = input("Do you want to replay(y/n)? ")
+            if choice3.capitalize() == "Y":
+                pass
 
-Find the answer, and you shall begin your journey into the depths of Professor Evergreen’s tower. Each elemental key is guarded by challenges that will test your wit, resolve, and moral compass. Choose wisely, for the path you take will shape your destiny and the fate of the alchemist's legacy.
+def water_chamber(game_state):
+    letter = """
+"I am the mirror of the sky,
+Yet I am not made of clouds or light.
+I flow through valleys, soft and sly,
+And with me, you quench your thirst and might.
+My embrace can be gentle or fierce,
+And my depths hold secrets vast and clear.
+What am I?"
 
-Once you have obtained the first key, place it upon this letter. Doing so will reveal the next puzzle and guide you to the chamber of another element. Your quest will continue as you unlock the secrets of the tower, one key at a time.
+"""
+    if display_initial_msg(letter, "water"):
+        from water_chamber import play_with_water
+        game_array_water = [play_with_water]
+        tasks = gamelogic(game_array_water)
+        if tasks == 10:
+            print("You have succesfully completed all the tasks and claimed the water elemental key.")
 
-May your mind be sharp and your heart steadfast.
+def earth_chamber(game_state):
+    letter ="""
+Riddle:
 
-With anticipation,
+"I am ancient, yet ever new,
+Rooted deep where shadows grow.
+My strength lies in the quiet, the still,
+And in my embrace, all seeds will fulfill.
+I shape the land with my patient hand,
+And within me, great treasures stand.
+What am I?"
+"""
+    if display_initial_msg(letter, "earth"):
+        from earth_chamber import play_with_earth
+        game_array_earth = [play_with_earth]
+        tasks = gamelogic(game_array_earth)
+        if tasks == 10:
+            print("You have succesfully completed all the tasks and claimed the earth elemental key.")
+
+def air_chamber(game_state):
+    letter = """
+Riddle:
+
+"I am invisible but ever near,
+Moving swiftly without a trace.
+I fill your lungs and carry sound,
+And in my grasp, things gently sway.
+I can be a whisper or a storm,
+And in my touch, the world transforms.
+What am I?"
+"""
+    if display_initial_msg(letter, "air"):
+        from air_chamber import play_with_air
+        game_array_air = [play_with_air]
+        tasks = gamelogic(game_array_air)
+        if tasks == 10:
+            print("You have succesfully completed all the tasks and claimed the air elemental key.")
+
+def space_chamber(game_state):
+    letter = """
+
+Riddle:
+
+"I stretch beyond the reach of sight,
+A vast domain where stars ignite.
+I hold the realms of time and space,
+And in my depths, secrets find their place.
+I am both the limit and the guide,
+In my embrace, the answers hide.
+What am I?"
+"""
+    if display_initial_msg(letter, "space"):
+        from space_chamber import play_with_space
+        game_array_space = [play_with_space]
+        tasks = gamelogic(game_array_space)
+        if tasks == 10:
+            print("You have succesfully completed all the tasks and claimed the space elemental key.")
+
+def display_final_msg(game_state):
+    final_part_of_letter ="""
+Congratulations, Seeker.
+
+You have traversed the trials and secured all five keys. As you place these keys upon this letter, a crucial step remains before you can unlock the true legacy of Professor Thaddeus Evergreen.
+
+Before you lies a grand door, the gateway to the heart of the alchemist’s legacy. To open this door, you must place each key in its rightful position according to the following riddle. Each key corresponds to a specific place, and only by placing them correctly will you reveal the secrets within.
+
+Final Riddle:
+
+"First, where strength and roots hold tight,
+Lay the symbol of ancient might.
+
+Second, where whispers ride the breeze,
+Place the token that moves with ease.
+
+Third, where shadows dance with light,
+Position the spark that burns so bright.
+
+Fourth, where reflections show what's pure,
+Set the emblem that flows secure.
+
+Last, where the endless void does trace,
+Put the sign from boundless space."
+
+Arrange the keys accordingly to unlock the door and gain access to the alchemist’s ultimate legacy. The path you have walked has led you to this final moment of discovery. Use your knowledge and insight to unveil what lies beyond.
+
+May your resolve be unwavering as you complete your journey and unlock the true secrets of Professor Evergreen’s Tower.
+
+With reverence and respect,
 The Guardians of the Tower
 
-Good luck, adventurer. The tower awaits."""
-    display_initial_msg(letter)
-def water_chamber():
-    print(f"You are in water chamber")
-def earth_chamber():
-    print(f"You are in earth chamber")
-def air_chamber():
-    print(f"You are in air chamber")
-def space_chamber():
-    print(f"You are in space chamber")
+Good luck, adventurer. The culmination of your quest awaits."""
+    print(final_part_of_letter)
+    print("(1 for fire, 2 for water, 3 for earth, 4 for air, and 5 for space)")
+    keys_order = input("Enter the order of keys (like 1,2,3,4,5):")
+    if keys_order == "3,4,1,2,5":
+        return True
 
-# print()
-# 
-# speak("The letter has the following message:")
-# l
-# print(letter)
+def exit_game():
+    pass
+def restart_puzzle(game):
+    pass
+def play_final_part():
+    from final_part import play_final_part
 
-# c2 = input("Enter the answer to the puzzle: ")
-# if c2.capitalize() == "Fire":
-#     print("You guessed the right place. You are going to 'Wings of Fire - Fire Chamber', a great place full of adventures.")
+def restart_game():
+    pass
+def end_game():
+    pass
+def game_loop(game_state): 
+    while True:
+        NewGame(game_state)
+def main_menu(): 
+    print("\nMain Menu:") 
+    print("1. Start New Game") 
+    print("2. Load Game") 
+    print("3. Quit") 
+    return input("Choose an option (1/2/3): ")
 
-#     print()
-#     from fire_chamber import play_flame_symbol_puzzle, play_temperature_control_test, blazing_bridge_trap, fiery_guardian_combat, flame_whispers_riddles, combustion_chess
-#     # Main game logic
-#     task_completed = 0
+def start_new_game(player_name): 
+    game_state = { "player_name": player_name, 
+                    "location": "entrance", 
+                    "health": 100, 
+                    "inventory": [] } 
+    return game_loop(game_state)
 
-#     if play_flame_symbol_puzzle():
-#         task_completed = 1
-#         print()
-#         print()
-#         if play_temperature_control_test():
-#             task_completed += 1
-#             print()
-#             print()
-#             if blazing_bridge_trap():
-#                 if fiery_guardian_combat():
-#                     task_completed += 1
-#                     print()
-#                     print()
-#                     if flame_whispers_riddles():
-#                         task_completed += 1
-#                         print()
-#                         print()
-#                         if combustion_chess():
-#                             task_completed += 1
-#                             print()
-#                             print()
-#     speak(f"You have completed all the tasks and get the fire elemental key.")
-
-#     if task_completed == 10:
-#         print("Place the Fire Elemental Key upon the letter to get the next puzzle.")
-#         second_part_of_letter = """
-# Congratulations, Seeker.
-
-# You have successfully obtained the first key and unlocked the secrets of the Fire Chamber. As you place the Fire Key upon this letter, you will unveil the next challenge that awaits you in the next Chamber.
-
-# Prepare yourself, for the challenges of this chamber which are deep and filled with their own set of mysteries. To proceed, you must solve the riddle that will guide you to the key hidden within the next chamber.
-
-# Next Chamber Riddle:
-
-# "I am the mirror of the sky,
-# Yet I am not made of clouds or light.
-# I flow through valleys, soft and sly,
-# And with me, you quench your thirst and might.
-# My embrace can be gentle or fierce,
-# And my depths hold secrets vast and clear.
-# What am I?"
-
-# Solve this riddle to reveal the path forward. The next Key, when discovered, will help you navigate through the next trials within the tower. Each chamber presents a new challenge, demanding not only your intellect but also your courage and resolve.
-
-# Continue with determination, and may the currents guide you.
-
-# With resolve,
-# The Guardians of the Tower
-
-# Good luck, adventurer. The next element awaits."""
-#         print(second_part_of_letter)
-#         c3 = input("Enter the answer to the puzzle: ")
-#         if c3.capitalize() == "Water":
-#             print("You guessed the right place. You are going to 'Aqua Maze - Water Chamber ' another great place full of adventures.")
-#             from water_chamber import *
-#             water_task_completed = 0
-#             print(f"Tasks completed: {water_task_completed}")
-#             speak(f"You have completed {water_task_completed} tasks out of 20 tasks to get the fire elemental key.")
-#             if water_task_completed == 20:
-#                 print("Place the Water Elemental Key upon the letter to get the next puzzle.")
-#                 third_part_of_letter ="""
-# Well done, Seeker.
-
-# You have conquered the trials of the Water Chamber and secured the second key. As you place the Water Key upon this letter, you shall now unveil the next challenge awaiting you.
-
-# Prepare yourself, for this new chamber is one of stability and strength, holding secrets buried deep within its depths. To proceed, you must solve the riddle that will guide you to the key hidden among the stones and soil of this chamber.
-
-# Riddle:
-
-# "I am ancient, yet ever new,
-# Rooted deep where shadows grow.
-# My strength lies in the quiet, the still,
-# And in my embrace, all seeds will fulfill.
-# I shape the land with my patient hand,
-# And within me, great treasures stand.
-# What am I?"
-
-# Solve this riddle to reveal the path forward. The key, when found, will grant you access to further trials within the tower. Each chamber you conquer brings you closer to unlocking the full legacy of Professor Evergreen.
-
-# Press on with fortitude, for the trials ahead will test your endurance and wisdom.
-
-# With steadfastness,
-# The Guardians of the Tower
-
-# Good luck, adventurer. The next element awaits."""
-#                 print(third_part_of_letter)
-#                 c4 = input("Enter the answer to the puzzle: ")
-#                 if c4.capitalize() == "Earth":
-#                     print("You guessed the right place. You are going to 'Earth Nexus - Earth Chamber ' another great place full of adventures.")
-#                     from earth_chamber import *
-#                     earth_task_completed = 0
-#                     print(f"Tasks completed: {earth_task_completed}")
-#                     speak(f"You have completed {earth_task_completed} tasks out of 20 tasks to get the fire elemental key.")
-#                     if earth_task_completed == 20:
-#                         print("Place the Earth Elemental Key upon the letter to get the next puzzle.")
-#                         fourth_part_of_letter = """
-# Impressive work, Seeker.
-
-# You have successfully navigated the challenges and secured the key from the previous chamber. As you place that key upon this letter, you will now reveal the next trial that awaits you.
-
-# Prepare yourself for the upcoming challenge, where the essence of the next trial holds the key to your progress. To advance, you must solve the riddle that will guide you to the key hidden among the currents and whispers of this ethereal space.
-
-# Riddle:
-
-# "I am invisible but ever near,
-# Moving swiftly without a trace.
-# I fill your lungs and carry sound,
-# And in my grasp, things gently sway.
-# I can be a whisper or a storm,
-# And in my touch, the world transforms.
-# What am I?"
-
-# Solve this riddle to uncover the path forward. The key you seek will unlock new mysteries and guide you further into the depths of the tower. Each chamber brings you closer to the ultimate discovery, and your journey continues with each challenge you overcome.
-
-# Stay vigilant and ready, for the path ahead will require both insight and agility.
-
-# With anticipation,
-# The Guardians of the Tower
-
-# Good luck, adventurer. The next element awaits."""
-#                         print(fourth_part_of_letter)
-#                         c5 = input("Enter the answer to the puzzle: ")
-#                         if c5.capitalize() == "Air":
-#                             print("You guessed the right place. You are going to 'Realm of Air - Air Chamber ' another great place full of adventures.")
-#                             from air_chamber import *
-#                             air_task_completed = 0
-#                             print(f"Tasks completed: {air_task_completed}")
-#                             speak(f"You have completed {air_task_completed} tasks out of 20 tasks to get the fire elemental key.")
-#                             if air_task_completed == 20:
-#                                 print("Place the Air Elemental Key upon the letter to get the next puzzle.")
-#                                 fifth_part_of_letter = """
-# Congratulations, Seeker.
-
-# You have successfully secured the key from the previous challenge. As you place that key upon this letter, you will unveil the final trial that lies ahead.
-
-# Prepare yourself for the ultimate challenge, where the essence of the final trial will test your understanding of the vast and boundless. To proceed, you must solve the riddle that will guide you to the key hidden in the expanse of this enigmatic space.
-
-# Riddle:
-
-# "I stretch beyond the reach of sight,
-# A vast domain where stars ignite.
-# I hold the realms of time and space,
-# And in my depths, secrets find their place.
-# I am both the limit and the guide,
-# In my embrace, the answers hide.
-# What am I?"
-
-# Solve this riddle to reveal the path forward. The key you seek will grant you access to the final mysteries within the tower.
-
-# When you have collected all five keys—Fire, Water, Air, Earth, and the one you now seek—place them all upon this letter. Doing so will reveal the ultimate secret of Professor Evergreen’s legacy and unlock the path to the final chamber.
-
-# Your journey is nearly complete, and the final chamber will bring you closer to unlocking the full legacy of Professor Evergreen. Press on with courage and insight, for the final trial will test the limits of your resolve.
-
-# With anticipation,
-# The Guardians of the Tower
-
-# Good luck, adventurer. The end of your quest is near."""
-#                                 print(fourth_part_of_letter)
-#                                 c6 = input("Enter the answer to the puzzle: ")
-#                                 if c6.capitalize() == "Space":
-#                                     print("You guessed the right place. You are going to 'Astra Cosmo - Space Chamber ' another great place full of adventures.")
-#                                     from space_chamber import *
-#                                     space_task_completed = 0
-#                                     print(f"Tasks completed: {space_task_completed}")
-#                                     speak(f"You have completed {space_task_completed} tasks out of 20 tasks to get the fire elemental key.")
-#                                     if space_task_completed == 20:
-#                                         print("Place the all five Elemental Key upon the letter to get the further information.")
-#                                         final_part_of_letter ="""
-# Congratulations, Seeker.
-
-# You have traversed the trials and secured all five keys. As you place these keys upon this letter, a crucial step remains before you can unlock the true legacy of Professor Thaddeus Evergreen.
-
-# Before you lies a grand door, the gateway to the heart of the alchemist’s legacy. To open this door, you must place each key in its rightful position according to the following riddle. Each key corresponds to a specific place, and only by placing them correctly will you reveal the secrets within.
-
-# Final Riddle:
-
-# "First, where strength and roots hold tight,
-# Lay the symbol of ancient might.
-
-# Second, where whispers ride the breeze,
-# Place the token that moves with ease.
-
-# Third, where shadows dance with light,
-# Position the spark that burns so bright.
-
-# Fourth, where reflections show what's pure,
-# Set the emblem that flows secure.
-
-# Last, where the endless void does trace,
-# Put the sign from boundless space."
-
-# Arrange the keys accordingly to unlock the door and gain access to the alchemist’s ultimate legacy. The path you have walked has led you to this final moment of discovery. Use your knowledge and insight to unveil what lies beyond.
-
-# May your resolve be unwavering as you complete your journey and unlock the true secrets of Professor Evergreen’s Tower.
-
-# With reverence and respect,
-# The Guardians of the Tower
-
-# Good luck, adventurer. The culmination of your quest awaits."""
-#                                         print(final_part_of_letter)
-#                                         print("(1 for fire, 2 for water, 3 for earth, 4 for air, and 5 for space)")
-#                                         keys_order = input("Enter the order of keys (like 1,2,3,4,5):")
-#                                         if keys_order == "3,4,1,2,5":
-#                                             from final_part import *
-#                                         else:
-#                                             print("Incorrect order. Please try again.")
-
-#                                     else:
-#                                         print("You had not completed all the tasks.")
-#                                         print("Game Over")
-#                                         speak("Game Over")
-#                             else:
-#                                 print("You had not completed all the tasks.")
-#                                 print("Game Over")
-#                                 speak("Game Over")
-#                     else:
-#                         print("You had not completed all the tasks.")
-#                         print("Game Over")
-#                         speak("Game Over")
-#             else:
-#                 print("You had not completed all the tasks.")
-#                 print("Game Over")
-#                 speak("Game Over")
-#         else:
-#             print("You had not completed all the tasks.")
-#             print("Game Over")
-#             speak("Game Over")
-#     else:
-#         print("You had not completed all the tasks.")
-#         print("Game Over")
-#         speak("Game Over")
-# else:
-#     print("Solve the puzzle correctly.")
-#     print("Better luck next time.")
-#     print("Game Over.")
-#     speak("Game Over.")
-#     print("Thank you for playing.")
-
-if __name__ == "__main__":
-    NewGame()
+def load_game(): 
+    try: 
+        with open('saved_game.json', 'r') as f: 
+            game_state = json.load(f)
+            return game_loop(game_state) 
+    except FileNotFoundError: 
+        print("No saved game found. Starting a new game.")
+        return start_new_game()
+    
+def save_game(game_state): 
+    with open('saved_game.json', 'w') as f: 
+        json.dump(game_state, f) 
+        print("Game saved.")
+        
+def play_game():
+    if start_msg().lower() == "y":
+        player_name = input("What is your name, brave adventurer? ")
+        while True:
+            choice = main_menu()
+            if choice == 1:
+                game_stat = start_new_game(player_name)
+            elif choice == "2": 
+                game_state = load_game() 
+            elif choice == "3": 
+                print("Thank you for playing The Forgotten Alchemist's Legacy. Farewell!") 
+                break 
+            else: print("Invalid choice. Try again.")
+        
+            save_game(game_state)
